@@ -1,8 +1,3 @@
-export { languages } from "@opentranslate/languages";
-export { Translator } from "./translator";
-export {
-  TranslateResult,
-  TranslateOptions,
-  Languages,
-  TranslateStatus
-} from "./type";
+export * from "@opentranslate/languages";
+export * from "./type";
+export * from "./translator";
