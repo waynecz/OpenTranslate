@@ -2,6 +2,8 @@ import { Language } from "@opentranslate/languages";
 
 export type Languages = Array<Language>;
 
+export type TranslatorEnv = "node" | "ext";
+
 export type TranslateStatus =
   | "SUCCESS"
   | "NETWORK_ERROR"
