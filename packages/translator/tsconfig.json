@@ -1,9 +1,7 @@
 {
   "extends": "../tsconfig.settings.json",
   "compilerOptions": {
-    "composite": true,
     "outDir": "dist"
   },
-  "include": ["src"],
-  "references": [{ "path": "../languages" }]
+  "include": ["src"]
 }
