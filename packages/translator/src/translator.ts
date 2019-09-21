@@ -112,7 +112,11 @@ export abstract class Translator {
    * @returns {Promise<string|undefined>}
    * @memberof Translator
    */
-  textToSpeech(text: string, options:TextToSpeechOptions): Promise<string | undefined> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  textToSpeech(
+    text: string,
+    options: TextToSpeechOptions
+  ): Promise<string | undefined> {
     return Promise.resolve(undefined);
   }
 }

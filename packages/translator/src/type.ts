@@ -34,5 +34,6 @@ export interface TranslateOptions {
 
 export interface TextToSpeechOptions {
   lang: Language;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   meta?: any;
 }

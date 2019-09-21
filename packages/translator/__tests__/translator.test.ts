@@ -13,7 +13,10 @@ describe("Translator", () => {
     class TestTranslator extends Translator {
       name = "test";
 
-      textToSpeech(text: string, options: TextToSpeechOptions) {
+      textToSpeech(
+        text: string,
+        options: TextToSpeechOptions
+      ): Promise<string> {
         return Promise.resolve("https://hello.com/a.mp3");
       }
 
@@ -53,7 +56,7 @@ describe("Translator", () => {
       trans: ["origin text"]
     });
 
-    const tts = await translator.textToSpeech("hello", {lang:"en"});
+    const tts = await translator.textToSpeech("hello", { lang: "en" });
     if (tts != undefined) {
       expect(tts).toBe("https://hello.com/a.mp3");
     }
