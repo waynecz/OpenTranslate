@@ -1,7 +1,10 @@
 {
   "name": "@opentranslate/translator",
   "private": false,
-  "version": "0.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "0.1.0",
   "description": "Common APIs of translator in OpenTranslate Standard.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,12 +15,11 @@
   "keywords": [
     "OpenTranslate",
     "translate",
-    "language",
-    "dictionary"
+    "translator"
   ],
-  "repository": "opentranslate/translator",
-  "homepage": "https://github.com/OpenTranslate/translator",
-  "bugs": "https://github.com/opentranslate/translator/issues/",
+  "repository": "opentranslate/Opentranslate",
+  "homepage": "https://github.com/OpenTranslate/OpenTranslate/tree/master/packages/translator",
+  "bugs": "https://github.com/opentranslate/opentranslate/issues/",
   "author": "OpenTranslate",
   "license": "MIT",
   "dependencies": {

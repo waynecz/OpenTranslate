@@ -24,9 +24,9 @@
     "language",
     "dictionary"
   ],
-  "repository": "OpenTranslate/OpenTranslate",
-  "homepage": "https://github.com/OpenTranslate/OpenTranslate/packages/languages",
-  "bugs": "https://github.com/OpenTranslate/OpenTranslate/issues/",
+  "repository": "opentranslate/Opentranslate",
+  "homepage": "https://github.com/OpenTranslate/OpenTranslate/tree/master/packages/languages",
+  "bugs": "https://github.com/opentranslate/opentranslate/issues/",
   "author": "OpenTranslate",
   "license": "MIT"
 }
