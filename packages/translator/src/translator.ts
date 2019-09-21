@@ -2,7 +2,8 @@ import {
   Languages,
   TranslatorEnv,
   TranslateOptions,
-  TranslateResult
+  TranslateResult,
+  TranslateQueryResult
 } from "./type";
 import { Language } from "@opentranslate/languages";
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosPromise } from "axios";
@@ -46,25 +47,15 @@ export abstract class Translator {
    * @returns {Promise<TranslateResult>}
    * @memberof Translator
    */
-  translate(text: string, options: TranslateOptions): Promise<TranslateResult> {
-    return this.postTranslate(this.query(text, options));
-  }
-
-  /**
-   * 无需实现
-   * 翻译后处理，添加翻译源信息
-   * @private
-   * @param {Promise<TranslateResult>} res
-   * @returns {Promise<TranslateResult>}
-   * @memberof Translator
-   */
-  private postTranslate(
-    res: Promise<TranslateResult>
+  async translate(
+    text: string,
+    options: TranslateOptions
   ): Promise<TranslateResult> {
-    return res.then(res => {
-      res.engine = this.name;
-      return Promise.resolve(res);
-    });
+    const queryResult = await this.query(text, options);
+    return {
+      ...queryResult,
+      engine: this.name
+    };
   }
 
   /**
@@ -74,13 +65,13 @@ export abstract class Translator {
    * @abstract
    * @param {string} text
    * @param {TranslateOptions} options
-   * @returns {Promise<TranslateResult>}
+   * @returns {Promise<TranslateQueryResult>}
    * @memberof Translator
    */
   protected abstract query(
     text: string,
     options: TranslateOptions
-  ): Promise<TranslateResult>;
+  ): Promise<TranslateQueryResult>;
 
   /**
    * 跨平台 xhr 请求方法。
