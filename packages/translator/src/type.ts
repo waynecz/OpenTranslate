@@ -17,15 +17,9 @@ export interface TranslateResult {
   from: Language;
   to: Language;
   /** 原文 */
-  origin: {
-    text: string;
-    tts?: string;
-  };
+  origin: Array<string>;
   /** 译文 */
-  trans: {
-    text: string;
-    tts?: string;
-  };
+  trans: Array<string>;
 }
 
 export type TranslateQueryResult = Omit<TranslateResult, "engine">;
@@ -35,5 +29,10 @@ export interface TranslateOptions {
   from: Language;
   to: Language;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  meta?: any;
+}
+
+export interface TextToSpeechOptions {
+  lang: Language;
   meta?: any;
 }
