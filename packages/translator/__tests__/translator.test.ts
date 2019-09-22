@@ -4,8 +4,7 @@ import {
   TranslateOptions,
   TranslateResult,
   TranslateQueryResult,
-  Languages,
-  TextToSpeechOptions
+  Languages
 } from "../src";
 
 describe("Translator", () => {
@@ -13,10 +12,7 @@ describe("Translator", () => {
     class TestTranslator extends Translator {
       name = "test";
 
-      textToSpeech(
-        text: string,
-        options: TextToSpeechOptions
-      ): Promise<string> {
+      textToSpeech(text: string, lang: string): Promise<string> {
         return Promise.resolve("https://hello.com/a.mp3");
       }
 
@@ -32,8 +28,12 @@ describe("Translator", () => {
           text: text,
           from: options.from,
           to: options.to,
-          origin: ["origin text"],
-          trans: ["origin text"]
+          origin: {
+            paragraphs: ["origin text"]
+          },
+          trans: {
+            paragraphs: ["trans text"]
+          }
         });
       }
     }
@@ -52,11 +52,15 @@ describe("Translator", () => {
       text: "hello",
       from: options.from,
       to: options.to,
-      origin: ["origin text"],
-      trans: ["origin text"]
+      origin: {
+        paragraphs: ["origin text"]
+      },
+      trans: {
+        paragraphs: ["trans text"]
+      }
     });
 
-    const tts = await translator.textToSpeech("hello", { lang: "en" });
+    const tts = await translator.textToSpeech("hello", "en");
     if (tts != undefined) {
       expect(tts).toBe("https://hello.com/a.mp3");
     }
