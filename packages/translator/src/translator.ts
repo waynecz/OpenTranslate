@@ -3,8 +3,7 @@ import {
   TranslatorEnv,
   TranslateOptions,
   TranslateResult,
-  TranslateQueryResult,
-  TextToSpeechOptions
+  TranslateQueryResult
 } from "./type";
 import { Language } from "@opentranslate/languages";
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosPromise } from "axios";
@@ -99,24 +98,22 @@ export abstract class Translator {
    * @returns {Promise<Language>}
    * @memberof Translator
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   detect(text: string): Promise<Language> {
     return Promise.resolve("auto");
   }
 
   /**
-   *
-   *
+   * 文本转换为语音
    * @param {string} text
    * @param {Language} lang
-   * @returns {Promise<string|undefined>}
+   * @returns {Promise<string|null>} 语言文件地址
    * @memberof Translator
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   textToSpeech(
     text: string,
-    options: TextToSpeechOptions
-  ): Promise<string | undefined> {
-    return Promise.resolve(undefined);
+    lang: Language,
+    meta?: any // eslint-disable-line @typescript-eslint/no-explicit-any
+  ): Promise<string | null> {
+    return Promise.resolve(null);
   }
 }
