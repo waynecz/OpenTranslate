@@ -18,12 +18,12 @@ export interface TranslateResult {
   to: Language;
   /** 原文 */
   origin: {
-    text: string[];
+    paragraphs: string[];
     tts?: string;
   };
   /** 译文 */
   trans: {
-    text: string[];
+    paragraphs: string[];
     tts?: string;
   };
 }
