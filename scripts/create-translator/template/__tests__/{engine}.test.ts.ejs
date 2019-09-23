@@ -3,10 +3,7 @@ import { <%- engineTitled %> } from "../src";
 describe("Dict <%- engineTitled %>", () => {
   it("should translate successfully", async () => {
     const <%- engine %> = new <%- engineTitled %>();
-    const result = await <%- engine %>.translate("I love you", {
-      from: "en",
-      to: "zh-CN"
-    });
+    const result = await <%- engine %>.translate("I love you", "en", "zh-CN");
 
     expect(result).toEqual({
       engine: "<%- engine %>",
@@ -38,7 +35,7 @@ describe("Dict <%- engineTitled %>", () => {
   // it("should detect language for a given text", async () => {
   //   const <%- engine %> = new <%- engineTitled %>();
   //   const lang = await <%- engine %>.detect("你好");
-
+  //
   //   expect(lang).toBe("zh-CN");
   // });
 });
