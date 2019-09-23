@@ -1,0 +1,44 @@
+import { <%- engineTitled %> } from "../src";
+
+describe("Dict <%- engineTitled %>", () => {
+  it("should translate successfully", async () => {
+    const <%- engine %> = new <%- engineTitled %>();
+    const result = await <%- engine %>.translate("I love you", {
+      from: "en",
+      to: "zh-CN"
+    });
+
+    expect(result).toEqual({
+      engine: "<%- engine %>",
+      text: "I love you",
+      from: "en",
+      to: "zh-CN",
+      /** 原文 */
+      origin: {
+        paragraphs: ["I love you"],
+        tts: expect.any(String)
+      },
+      /** 译文 */
+      trans: {
+        paragraphs: [expect.stringContaining("爱")],
+        tts: expect.any(String)
+      }
+    });
+  }, 5000);
+
+  it("should get supported languages", () => {
+    const <%- engine %> = new <%- engineTitled %>();
+    const result = <%- engine %>.getSupportLanguages();
+
+    expect(result).toContain("auto");
+    expect(result).toContain("zh-CN");
+    expect(result).toContain("en");
+  }, 5000);
+
+  // it("should detect language for a given text", async () => {
+  //   const <%- engine %> = new <%- engineTitled %>();
+  //   const lang = await <%- engine %>.detect("你好");
+
+  //   expect(lang).toBe("zh-CN");
+  // });
+});

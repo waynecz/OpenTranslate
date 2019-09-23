@@ -5,6 +5,9 @@
       "url": ".vscode/locales.schema.json"
     }
   ],
+  "files.associations": {
+    "**/scripts/**/*.ejs": "plaintext"
+  },
   "eslint.enable": true,
   "eslint.autoFixOnSave": true,
   "eslint.options": {
