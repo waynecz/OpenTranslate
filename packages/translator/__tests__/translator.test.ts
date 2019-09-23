@@ -12,6 +12,10 @@ describe("Translator", () => {
     class TestTranslator extends Translator {
       name = "test";
 
+      textToSpeech(text: string, lang: string): Promise<string> {
+        return Promise.resolve("https://hello.com/a.mp3");
+      }
+
       getSupportLanguages(): Languages {
         return ["en"];
       }
@@ -25,12 +29,10 @@ describe("Translator", () => {
           from: options.from,
           to: options.to,
           origin: {
-            text: "origin text",
-            tts: "https://test.com/tts.mp3"
+            paragraphs: ["origin text"]
           },
           trans: {
-            text: "origin text",
-            tts: "https://test.com/tts.mp3"
+            paragraphs: ["trans text"]
           }
         });
       }
@@ -51,14 +53,17 @@ describe("Translator", () => {
       from: options.from,
       to: options.to,
       origin: {
-        text: "origin text",
-        tts: "https://test.com/tts.mp3"
+        paragraphs: ["origin text"]
       },
       trans: {
-        text: "origin text",
-        tts: "https://test.com/tts.mp3"
+        paragraphs: ["trans text"]
       }
     });
+
+    const tts = await translator.textToSpeech("hello", "en");
+    if (tts != undefined) {
+      expect(tts).toBe("https://hello.com/a.mp3");
+    }
   }, 20000);
 
   it("should throw error when failed", async () => {

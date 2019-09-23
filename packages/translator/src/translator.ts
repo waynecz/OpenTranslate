@@ -15,7 +15,7 @@ export abstract class Translator {
   private env: TranslatorEnv;
 
   /**
-   * 词典标识符
+   * 翻译源标识符
    */
   abstract name: string;
 
@@ -98,8 +98,22 @@ export abstract class Translator {
    * @returns {Promise<Language>}
    * @memberof Translator
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   detect(text: string): Promise<Language> {
     return Promise.resolve("auto");
+  }
+
+  /**
+   * 文本转换为语音
+   * @param {string} text
+   * @param {Language} lang
+   * @returns {Promise<string|null>} 语言文件地址
+   * @memberof Translator
+   */
+  textToSpeech(
+    text: string,
+    lang: Language,
+    meta?: any // eslint-disable-line @typescript-eslint/no-explicit-any
+  ): Promise<string | null> {
+    return Promise.resolve(null);
   }
 }
