@@ -1,7 +1,6 @@
 import {
   Language,
   Translator,
-  TranslateOptions,
   TranslateQueryResult
 } from "@opentranslate/translator";
 import qs from "qs";
@@ -74,7 +73,11 @@ const langMap: [Language, string][] = [
   ["yue", "yue"]
 ];
 
-export class Sogou extends Translator {
+export interface SogouConfig {
+  token?: string;
+}
+
+export class Sogou extends Translator<SogouConfig> {
   /** Translator lang to custom lang */
   private static readonly langMap = new Map(langMap);
 
@@ -101,8 +104,8 @@ export class Sogou extends Translator {
   };
 
   private async getToken(): Promise<string> {
-    // update token every six hours
-    if (Date.now() - this.token.date > 6 * 3600000) {
+    // update token every hour
+    if (Date.now() - this.token.date > 1 * 3600000) {
       try {
         const response = await this.request<{ seccode: string }>(
           "https://raw.githubusercontent.com/OpenTranslate/OpenTranslate/master/packages/service-sogou/seccode.json"
@@ -121,7 +124,9 @@ export class Sogou extends Translator {
 
   protected async query(
     text: string,
-    options: TranslateOptions
+    from: Language,
+    to: Language,
+    config: SogouConfig
   ): Promise<TranslateQueryResult> {
     type SogouTranslateResult =
       | undefined
@@ -137,9 +142,6 @@ export class Sogou extends Translator {
           };
         };
 
-    const from = Sogou.langMap.get(options.from);
-    const to = Sogou.langMap.get(options.to);
-
     const response = await this.request<SogouTranslateResult>(
       "https://fanyi.sogou.com/reventondc/translateV2",
       {
@@ -152,8 +154,8 @@ export class Sogou extends Translator {
           Origin: "https://fanyi.sogou.com"
         },
         data: qs.stringify({
-          from,
-          to,
+          from: Sogou.langMap.get(from),
+          to: Sogou.langMap.get(to),
           text: text,
           client: "pc",
           fr: "browser_pc",
@@ -165,7 +167,13 @@ export class Sogou extends Translator {
           second_query: "true",
           uuid: Sogou.getUUID(),
           needQc: "1",
-          s: md5("" + from + to + text + (await this.getToken()))
+          s: md5(
+            "" +
+              Sogou.langMap.get(from) +
+              Sogou.langMap.get(to) +
+              text +
+              (config.token || (await this.getToken()))
+          )
         })
       }
     ).catch(() => {});
@@ -183,14 +191,14 @@ export class Sogou extends Translator {
     return {
       text: text,
       from: Sogou.langMapReverse.get(translate.from) || "auto",
-      to: options.to,
+      to,
       origin: {
         paragraphs: [translate.text],
-        tts: (await this.textToSpeech(translate.text, options.from)) || ""
+        tts: (await this.textToSpeech(translate.text, from)) || ""
       },
       trans: {
         paragraphs: [translate.dit],
-        tts: (await this.textToSpeech(translate.dit, options.to)) || ""
+        tts: (await this.textToSpeech(translate.dit, to)) || ""
       }
     };
   }
@@ -202,7 +210,7 @@ export class Sogou extends Translator {
   }
 
   async detect(text: string): Promise<Language> {
-    const result = await this.query(text, { from: "auto", to: "en" });
+    const result = await this.translate(text, "auto", "en");
     return result.from;
   }
 
