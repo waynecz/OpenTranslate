@@ -6,6 +6,7 @@ import {
 } from "@opentranslate/translator";
 import qs from "qs";
 import md5 from "md5";
+import { seccode as defaultSeccode } from "../seccode.json";
 
 const langMap: [Language, string][] = [
   ["auto", "auto"],
@@ -95,7 +96,7 @@ export class Sogou extends Translator {
   }
 
   private token = {
-    value: "8511813095151",
+    value: defaultSeccode,
     date: 0
   };
 
