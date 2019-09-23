@@ -27,6 +27,13 @@ function checkTempalteFiles(entries) {
 }
 
 async function main() {
+  if (!argv._[0]) {
+    console.error(
+      `\nTranslator name is required.\n\nyarn create-translator <name>\n`
+    );
+    process.exit(1);
+  }
+
   const engine = argv._[0].toLowerCase();
   await checkExistingTranslator(engine);
 
