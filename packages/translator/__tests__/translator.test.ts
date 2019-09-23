@@ -1,11 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  Translator,
-  TranslateOptions,
-  TranslateResult,
-  TranslateQueryResult,
-  Languages
-} from "../src";
+import { Translator, TranslateQueryResult, Language, Languages } from "../src";
 
 describe("Translator", () => {
   it("should successfully return result", async () => {
@@ -22,12 +16,14 @@ describe("Translator", () => {
 
       query(
         text: string,
-        options: TranslateOptions
+        from: Language,
+        to: Language,
+        config: {}
       ): Promise<TranslateQueryResult> {
         return Promise.resolve({
           text: text,
-          from: options.from,
-          to: options.to,
+          from,
+          to,
           origin: {
             paragraphs: ["origin text"]
           },
@@ -40,18 +36,13 @@ describe("Translator", () => {
 
     const translator: Translator = new TestTranslator();
 
-    const options: TranslateOptions = {
-      from: "en",
-      to: "zh-CN"
-    };
-
-    const result = await translator.translate("hello", options);
+    const result = await translator.translate("hello", "en", "zh-CN");
 
     expect(result).toEqual({
       engine: "test",
       text: "hello",
-      from: options.from,
-      to: options.to,
+      from: "en",
+      to: "zh-CN",
       origin: {
         paragraphs: ["origin text"]
       },
@@ -74,20 +65,45 @@ describe("Translator", () => {
         return ["en"];
       }
 
-      query(text: string, options: TranslateOptions): Promise<TranslateResult> {
+      query(): Promise<TranslateQueryResult> {
         return Promise.reject(new Error("UNKNOWN"));
       }
     }
 
-    const options: TranslateOptions = {
-      from: "en",
-      to: "zh-CN"
-    };
-
     try {
-      await new FailTranslator().translate("hello", options);
+      await new FailTranslator().translate("hello", "en", "zh-CN");
     } catch (e) {
       expect(e.message).toBe("UNKNOWN");
     }
   }, 20000);
+
+  it("should parst config correctly", async () => {
+    type Translator1Config = { opt1?: string; opt2?: string };
+
+    class Translator1 extends Translator<Translator1Config> {
+      name = "Translator1";
+      getSupportLanguages = (): Languages => [];
+      query = jest.fn();
+    }
+
+    const translator1 = new Translator1({
+      config: {
+        opt1: "opt1"
+      }
+    });
+
+    translator1.translate("text1", "en", "zh-CN");
+    expect(translator1.query).lastCalledWith("text1", "en", "zh-CN", {
+      opt1: "opt1"
+    });
+
+    translator1.translate("text1", "en", "zh-CN", {
+      opt1: "opt11",
+      opt2: "opt22"
+    });
+    expect(translator1.query).lastCalledWith("text1", "en", "zh-CN", {
+      opt1: "opt11",
+      opt2: "opt22"
+    });
+  });
 });

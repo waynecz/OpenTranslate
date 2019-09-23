@@ -1,7 +1,7 @@
 import {
   Languages,
   TranslatorEnv,
-  TranslateOptions,
+  TranslatorInit,
   TranslateResult,
   TranslateQueryResult
 } from "./type";
@@ -9,10 +9,15 @@ import { Language } from "@opentranslate/languages";
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosPromise } from "axios";
 import { modifyExtraHeaders } from "./extra-headers";
 
-export abstract class Translator {
+export abstract class Translator<Config extends {} = {}> {
   axios: AxiosInstance;
 
   private env: TranslatorEnv;
+
+  /**
+   * 自定义选项
+   */
+  config: Config;
 
   /**
    * 翻译源标识符
@@ -21,37 +26,32 @@ export abstract class Translator {
 
   /**
    * 可选的axios实例
-   * @param {TranslatorEnv} [env="node"]
-   * @param {AxiosInstance} [axios=_axios]
-   * @memberof Translator
    */
-  constructor(env: TranslatorEnv = "node", axios: AxiosInstance = Axios) {
-    this.env = env;
-    this.axios = axios;
+  constructor(init: TranslatorInit<Config> = {}) {
+    this.env = init.env || "node";
+    this.axios = init.axios || Axios;
+    this.config = init.config || ({} as Config);
   }
 
   /**
-   *
    * 获取翻译器所支持的语言列表： 语言标识符数组
-   * @abstract
-   * @returns {Languages}
-   * @memberof Translator
    */
   abstract getSupportLanguages(): Languages;
 
   /**
-   *
    * 下游应用调用的接口
-   * @param {string} text
-   * @param {TranslateOptions} options
-   * @returns {Promise<TranslateResult>}
-   * @memberof Translator
    */
   async translate(
     text: string,
-    options: TranslateOptions
+    from: Language,
+    to: Language,
+    config = {} as Config
   ): Promise<TranslateResult> {
-    const queryResult = await this.query(text, options);
+    const queryResult = await this.query(text, from, to, {
+      ...this.config,
+      ...config
+    });
+
     return {
       ...queryResult,
       engine: this.name
@@ -60,24 +60,17 @@ export abstract class Translator {
 
   /**
    * 翻译源需要实现的方法
-   *
-   * @protected
-   * @abstract
-   * @param {string} text
-   * @param {TranslateOptions} options
-   * @returns {Promise<TranslateQueryResult>}
-   * @memberof Translator
    */
   protected abstract query(
     text: string,
-    options: TranslateOptions
+    from: Language,
+    to: Language,
+    config: Config
   ): Promise<TranslateQueryResult>;
 
   /**
    * 跨平台 xhr 请求方法。
    * 自动处理 `Origin` 和 `Referer`。
-   * @param {string} url
-   * @param {AxiosRequestConfig} config
    */
   protected request<R = {}>(
     url: string,
@@ -93,10 +86,6 @@ export abstract class Translator {
 
   /**
    * 如果翻译源提供了单独的检测语言的功能，请实现此接口
-   * @abstract
-   * @param {string} text
-   * @returns {Promise<Language>}
-   * @memberof Translator
    */
   detect(text: string): Promise<Language> {
     return Promise.resolve("auto");
@@ -104,10 +93,7 @@ export abstract class Translator {
 
   /**
    * 文本转换为语音
-   * @param {string} text
-   * @param {Language} lang
    * @returns {Promise<string|null>} 语言文件地址
-   * @memberof Translator
    */
   textToSpeech(
     text: string,
