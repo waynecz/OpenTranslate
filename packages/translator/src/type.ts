@@ -36,11 +36,3 @@ export interface TranslateResult {
 }
 
 export type TranslateQueryResult = Omit<TranslateResult, "engine">;
-
-/** 统一的查询参数结构 */
-export interface TranslateOptions<Meta extends {}> {
-  from: Language;
-  to: Language;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  meta?: Meta;
-}
