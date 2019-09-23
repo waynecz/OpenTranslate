@@ -74,7 +74,15 @@ const langMap: [Language, string][] = [
 ];
 
 export class Sogou extends Translator {
-  static getUUID(): string {
+  /** Translator lang to custom lang */
+  private static readonly langMap = new Map(langMap);
+
+  /** Custom lang to translator lang */
+  private static readonly langMapReverse = new Map(
+    langMap.map(([translatorLang, lang]) => [lang, translatorLang])
+  );
+
+  private static getUUID(): string {
     let uuid = "";
     for (let i = 0; i < 32; i++) {
       if (i === 8 || i === 12 || i === 16 || i === 20) {
@@ -86,19 +94,10 @@ export class Sogou extends Translator {
     return uuid;
   }
 
-  readonly name = "sogou";
-
   private token = {
     value: "8511813095151",
     date: 0
   };
-
-  /** Translator lang to custom lang */
-  private static readonly langMap = new Map(langMap);
-  /** Custom lang to translator lang */
-  private static readonly langMapReverse = new Map(
-    langMap.map(([translatorLang, lang]) => [lang, translatorLang])
-  );
 
   private async getToken(): Promise<string> {
     // update token every six hours
@@ -117,10 +116,6 @@ export class Sogou extends Translator {
     }
 
     return this.token.value;
-  }
-
-  getSupportLanguages(): Language[] {
-    return [...Sogou.langMap.keys()];
   }
 
   protected async query(
@@ -197,6 +192,12 @@ export class Sogou extends Translator {
         tts: (await this.textToSpeech(translate.dit, options.to)) || ""
       }
     };
+  }
+
+  readonly name = "sogou";
+
+  getSupportLanguages(): Language[] {
+    return [...Sogou.langMap.keys()];
   }
 
   async detect(text: string): Promise<Language> {
