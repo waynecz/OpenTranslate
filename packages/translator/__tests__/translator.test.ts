@@ -77,8 +77,8 @@ describe("Translator", () => {
     }
   }, 20000);
 
-  it("should parst config correctly", async () => {
-    type Translator1Config = { opt1?: string; opt2?: string };
+  it("should parse config correctly", async () => {
+    type Translator1Config = { opt1?: string; opt2?: string; opt3?: string };
 
     class Translator1 extends Translator<Translator1Config> {
       name = "Translator1";
@@ -88,22 +88,25 @@ describe("Translator", () => {
 
     const translator1 = new Translator1({
       config: {
-        opt1: "opt1"
+        opt1: "opt1",
+        opt2: "opt2"
       }
     });
 
     translator1.translate("text1", "en", "zh-CN");
     expect(translator1.query).lastCalledWith("text1", "en", "zh-CN", {
-      opt1: "opt1"
+      opt1: "opt1",
+      opt2: "opt2"
     });
 
     translator1.translate("text1", "en", "zh-CN", {
       opt1: "opt11",
-      opt2: "opt22"
+      opt3: "opt3"
     });
     expect(translator1.query).lastCalledWith("text1", "en", "zh-CN", {
       opt1: "opt11",
-      opt2: "opt22"
+      opt2: "opt2",
+      opt3: "opt3"
     });
   });
 });
