@@ -1,0 +1,32 @@
+{
+  "name": "@opentranslate/sogou",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "0.1.0",
+  "description": "Sogou translator with OpenTranslate API.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "build": "rm -rf dist && tsc --project tsconfig.json"
+  },
+  "keywords": [
+    "OpenTranslate",
+    "translate",
+    "translator"
+  ],
+  "repository": "opentranslate/Opentranslate",
+  "homepage": "https://github.com/OpenTranslate/OpenTranslate/tree/master/packages/sogou",
+  "bugs": "https://github.com/opentranslate/opentranslate/issues/",
+  "author": "OpenTranslate",
+  "license": "MIT",
+  "dependencies": {
+    "@opentranslate/translator": "^0.1.0",
+    "@types/md5": "^2.1.33",
+    "@types/qs": "^6.5.3",
+    "md5": "^2.2.1",
+    "qs": "^6.8.0"
+  }
+}
