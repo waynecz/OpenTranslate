@@ -104,7 +104,7 @@ export class Sogou extends Translator {
     if (Date.now() - this.token.date > 6 * 3600000) {
       try {
         const response = await this.request<{ seccode: string }>(
-          "https://raw.githubusercontent.com/OpenTranslate/OpenTranslate/master/packages/sogou/seccode.json"
+          "https://raw.githubusercontent.com/OpenTranslate/OpenTranslate/master/packages/service-sogou/seccode.json"
         );
         if (response.data && response.data.seccode) {
           this.token.value = response.data.seccode;
