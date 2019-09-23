@@ -1,7 +1,6 @@
 import {
   Language,
   Translator,
-  TranslateOptions,
   TranslateQueryResult
 } from "@opentranslate/translator";
 
@@ -12,7 +11,9 @@ const langMap: [Language, string][] = [
   ["en", "en"]
 ];
 
-export class <%- engineTitled %> extends Translator {
+export interface <%- engineTitled %>Config {}
+
+export class <%- engineTitled %> extends Translator<<%- engineTitled %>Config> {
   /** Translator lang to custom lang */
   private static readonly langMap = new Map(langMap);
 
@@ -23,7 +24,9 @@ export class <%- engineTitled %> extends Translator {
 
   protected async query(
     text: string,
-    options: TranslateOptions
+    from: Language,
+    to: Language,
+    config: <%- engineTitled %>Config
   ): Promise<TranslateQueryResult> {
 
   }
