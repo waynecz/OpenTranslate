@@ -23,6 +23,8 @@
   "author": "OpenTranslate",
   "license": "MIT",
   "dependencies": {
-    "@opentranslate/translator": "^0.1.0"
+    "@opentranslate/translator": "^0.1.0",
+    "@types/qs": "^6.5.3",
+    "qs": "^6.8.0"
   }
 }

@@ -6,7 +6,6 @@ describe("Dict Caiyun", () => {
     const result = await caiyun
       .translate("I love you", "en", "zh-CN")
       .catch(e => console.log(e));
-
     expect(result).toEqual({
       engine: "caiyun",
       text: "I love you",

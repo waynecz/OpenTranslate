@@ -4,6 +4,7 @@ import {
   Translator,
   TranslateQueryResult
 } from "@opentranslate/translator";
+import qs from "qs";
 
 type CaiyunTranslateResult = {
   confidence: number;
@@ -73,6 +74,15 @@ export class Caiyun extends Translator<CaiyunConfig> {
     return [...Caiyun.langMap.keys()];
   }
 
+  async textToSpeech(text: string, lang: Language): Promise<string> {
+    return `http://tts.baidu.com/text2audio?${qs.stringify({
+      lan: Caiyun.langMap.get(lang),
+      ie: "UTF-8",
+      spd: 5,
+      text
+    })}`;
+  }
+
   protected async query(
     text: string,
     from: Language,
@@ -110,11 +120,11 @@ export class Caiyun extends Translator<CaiyunConfig> {
       to,
       origin: {
         paragraphs: [text],
-        tts: ""
+        tts: await this.textToSpeech(text, from == "auto" ? "zh-CN" : from)
       },
       trans: {
         paragraphs: [result.target],
-        tts: ""
+        tts: await this.textToSpeech(result.target, to)
       }
     };
   }
