@@ -59,6 +59,11 @@ export abstract class Translator<Config extends {} = {}> {
   }
 
   /**
+   * 更新 token 的方法
+   */
+  updateToken?(): Promise<void>;
+
+  /**
    * 翻译源需要实现的方法
    */
   protected abstract query(

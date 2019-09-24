@@ -103,20 +103,24 @@ export class Sogou extends Translator<SogouConfig> {
     date: 0
   };
 
+  async updateToken(): Promise<void> {
+    try {
+      const response = await this.request<{ seccode: string }>(
+        "https://raw.githubusercontent.com/OpenTranslate/OpenTranslate/master/packages/service-sogou/seccode.json"
+      );
+      if (response.data && response.data.seccode) {
+        this.token.value = response.data.seccode;
+        this.token.date = Date.now();
+      }
+    } catch (e) {
+      console.warn(e);
+    }
+  }
+
   private async getToken(): Promise<string> {
     // update token every hour
-    if (Date.now() - this.token.date > 1 * 3600000) {
-      try {
-        const response = await this.request<{ seccode: string }>(
-          "https://raw.githubusercontent.com/OpenTranslate/OpenTranslate/master/packages/service-sogou/seccode.json"
-        );
-        if (response.data && response.data.seccode) {
-          this.token.value = response.data.seccode;
-          this.token.date = Date.now();
-        }
-      } catch (e) {
-        console.warn(e);
-      }
+    if (Date.now() - this.token.date > 3600000) {
+      this.updateToken();
     }
 
     return this.token.value;
