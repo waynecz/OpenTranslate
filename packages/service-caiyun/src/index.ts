@@ -22,44 +22,45 @@ export interface CaiyunConfig {
   token?: string;
 }
 
-export class Caiyun extends Translator {
-  private static token = { value: "", date: 0 };
+export class Caiyun extends Translator<CaiyunConfig> {
+  private token = { value: "token:cy4fgbil24jucmh8jfr5", date: 0 };
+
+  async updateToken(): Promise<void> {
+    try {
+      const homepage = await this.request<string>(
+        "https://fanyi.caiyunapp.com",
+        {
+          withCredentials: false,
+          method: "GET"
+        }
+      ).then(r => r.data);
+      const appjsPath = (homepage.match(/\/static\/js\/app\.\w+\.js/) || [
+        ""
+      ])[0];
+      if (appjsPath) {
+        const appjs = await this.request<string>(
+          "https://fanyi.caiyunapp.com" + appjsPath
+        ).then(r => r.data);
+        const matchRes = appjs.match(/token:\w+/);
+        if (matchRes) {
+          this.token = {
+            value: matchRes[0],
+            date: Date.now()
+          };
+        }
+      }
+    } catch (e) {}
+  }
 
   protected async getToken(): Promise<string> {
-    if (Date.now() - Caiyun.token.date > 15 * 60000) {
-      let token = "token:cy4fgbil24jucmh8jfr5";
-      try {
-        const homepage = await this.request<string>(
-          "https://fanyi.caiyunapp.com",
-          {
-            withCredentials: false,
-            method: "GET"
-          }
-        ).then(r => r.data);
-        const appjsPath = (homepage.match(/\/static\/js\/app\.\w+\.js/) || [
-          ""
-        ])[0];
-        if (appjsPath) {
-          const appjs = await this.request<string>(
-            "https://fanyi.caiyunapp.com" + appjsPath
-          ).then(r => r.data);
-          const matchRes = appjs.match(/token:\w+/);
-          if (matchRes) {
-            token = matchRes[0];
-          }
-        }
-      } catch (e) {
-        /* nothing */
-      }
-      Caiyun.token = {
-        value: token,
-        date: Date.now()
-      };
+    if (Date.now() - this.token.date > 3600000) {
+      await this.updateToken();
     }
-    return Caiyun.token.value;
+    return this.token.value;
   }
 
   readonly name = "caiyun";
+
   /** Translator lang to custom lang */
   private static readonly langMap = new Map(langMap);
 
