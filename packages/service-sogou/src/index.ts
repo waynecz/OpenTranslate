@@ -5,7 +5,7 @@ import {
 } from "@opentranslate/translator";
 import qs from "qs";
 import md5 from "md5";
-import { seccode as defaultSeccode } from "../seccode.json";
+import { seccode as defaultSeccode } from "./seccode.json";
 
 const langMap: [Language, string][] = [
   ["auto", "auto"],
@@ -106,7 +106,7 @@ export class Sogou extends Translator<SogouConfig> {
   async updateToken(): Promise<void> {
     try {
       const response = await this.request<{ seccode: string }>(
-        "https://raw.githubusercontent.com/OpenTranslate/OpenTranslate/master/packages/service-sogou/seccode.json"
+        "https://raw.githubusercontent.com/OpenTranslate/OpenTranslate/master/packages/service-sogou/src/seccode.json"
       );
       if (response.data && response.data.seccode) {
         this.token.value = response.data.seccode;
