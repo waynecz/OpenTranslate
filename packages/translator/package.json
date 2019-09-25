@@ -10,7 +10,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
-    "build": "rm -rf dist && tsc --project tsconfig.json"
+    "build": "rm -rf dist && tsc --project tsconfig.build.json"
   },
   "keywords": [
     "OpenTranslate",
