@@ -8,6 +8,7 @@ import {
 import { Language } from "@opentranslate/languages";
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosPromise } from "axios";
 import { modifyExtraHeaders } from "./extra-headers";
+import { detectLang } from "./detect-lang";
 
 export abstract class Translator<Config extends {} = {}> {
   axios: AxiosInstance;
@@ -92,8 +93,8 @@ export abstract class Translator<Config extends {} = {}> {
   /**
    * 如果翻译源提供了单独的检测语言的功能，请实现此接口
    */
-  detect(text: string): Promise<Language> {
-    return Promise.resolve("auto");
+  async detect(text: string): Promise<Language> {
+    return detectLang(text);
   }
 
   /**
