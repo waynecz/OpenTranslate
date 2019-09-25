@@ -22,9 +22,9 @@ npm i @opentranslate/caiyun
 ## Usage
 
 ```
-import caiyun from '@opentranslate/caiyun'
+import Caiyun from '@opentranslate/caiyun'
 
-const caiyun = new caiyun()
+const caiyun = new Caiyun()
 
 caiyun.translate('text').then(console.log)
 ```

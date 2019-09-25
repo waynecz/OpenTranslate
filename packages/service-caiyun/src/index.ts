@@ -76,7 +76,7 @@ export class Caiyun extends Translator<CaiyunConfig> {
 
   async textToSpeech(text: string, lang: Language): Promise<string> {
     return `http://tts.baidu.com/text2audio?${qs.stringify({
-      lan: Caiyun.langMap.get(lang),
+      lan: Caiyun.langMap.get(lang !== "auto" ? lang : "zh-CN"),
       ie: "UTF-8",
       spd: 5,
       text
@@ -120,7 +120,10 @@ export class Caiyun extends Translator<CaiyunConfig> {
       to,
       origin: {
         paragraphs: [text],
-        tts: await this.textToSpeech(text, from == "auto" ? "zh-CN" : from)
+        tts: await this.textToSpeech(
+          text,
+          from !== "auto" ? from : await this.detect(text)
+        )
       },
       trans: {
         paragraphs: [result.target],
