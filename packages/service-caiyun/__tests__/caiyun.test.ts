@@ -18,7 +18,7 @@ describe("Dict Caiyun", () => {
       },
       /** 译文 */
       trans: {
-        paragraphs: ["今夜月色很美。"],
+        paragraphs: [expect.stringContaining("月色很美")],
         tts: expect.any(String)
       }
     });
