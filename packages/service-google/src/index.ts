@@ -228,7 +228,7 @@ export class Google extends Translator<GoogleConfig> {
       } catch (e) {}
     }
 
-    const result = await fetchScheduled(
+    let result = await fetchScheduled(
       config.order.map(value => (): Promise<GoogleDataResult> =>
         value === "api"
           ? this.fetchWithoutToken(text, from, to)
@@ -241,6 +241,10 @@ export class Google extends Translator<GoogleConfig> {
       ),
       config.concurrent
     ).catch(() => {});
+
+    if (!result && config.apiAsFallback) {
+      result = await this.fetchWithoutToken(text, from, to);
+    }
 
     if (!result) {
       throw new Error("NETWORK_ERROR");
