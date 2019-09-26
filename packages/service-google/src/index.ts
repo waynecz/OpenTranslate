@@ -333,7 +333,7 @@ export class Google extends Translator<GoogleConfig> {
   async textToSpeech(
     text: string,
     lang: Language,
-    meta: {
+    meta?: {
       base: string;
       token?: {
         tk1: number;
@@ -341,7 +341,7 @@ export class Google extends Translator<GoogleConfig> {
       };
     }
   ): Promise<string | null> {
-    return meta.token
+    return meta && meta.token
       ? `${meta.base}/translate_tts?ie=UTF-8&total=1&idx=0&client=t` +
           qs.stringify({
             q: text,
