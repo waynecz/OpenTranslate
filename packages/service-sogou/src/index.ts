@@ -120,7 +120,7 @@ export class Sogou extends Translator<SogouConfig> {
   private async getToken(): Promise<string> {
     // update token every hour
     if (Date.now() - this.token.date > 3600000) {
-      this.updateToken();
+      await this.updateToken();
     }
 
     return this.token.value;
