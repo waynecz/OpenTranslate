@@ -35,7 +35,7 @@ describe("Dict Tencent", () => {
       });
       expect(t.status).toBe(200);
     }
-  }, 5000);
+  }, 10000);
 
   it("should get supported languages", () => {
     const tencent = new Tencent();
