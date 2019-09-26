@@ -1,0 +1,30 @@
+{
+  "name": "@opentranslate/tencent",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "0.1.0",
+  "description": "Tencent translator with OpenTranslate API.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "build": "rm -rf dist && tsc --project tsconfig.build.json"
+  },
+  "keywords": [
+    "OpenTranslate",
+    "translate",
+    "translator"
+  ],
+  "repository": "opentranslate/Opentranslate",
+  "homepage": "https://github.com/OpenTranslate/OpenTranslate/tree/master/packages/tencent",
+  "bugs": "https://github.com/opentranslate/opentranslate/issues/",
+  "author": "OpenTranslate",
+  "license": "MIT",
+  "dependencies": {
+    "@opentranslate/translator": "^0.1.0",
+    "@types/qs": "^6.5.3",
+    "md5": "^2.2.1"
+  }
+}
