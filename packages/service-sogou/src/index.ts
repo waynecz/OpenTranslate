@@ -230,7 +230,7 @@ export class Sogou extends Translator<SogouConfig> {
       : `https://fanyi.sogou.com/reventondc/synthesis?${qs.stringify({
           text,
           speed: "1",
-          lang: Sogou.langMap.get(lang),
+          lang: Sogou.langMap.get(lang) || "en",
           from: "translateweb"
         })}`;
   }
