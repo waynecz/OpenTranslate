@@ -4,6 +4,7 @@ const path = require("path");
 const fg = require("fast-glob");
 const ejs = require("ejs");
 const argv = require("yargs").argv;
+const lernaConfig = require("../../lerna.json");
 
 const packagePath = path.join(__dirname, "../../packages");
 
@@ -47,6 +48,7 @@ async function main() {
 
   entries.forEach(async entry => {
     const data = {
+      version: lernaConfig.version,
       engine,
       engineTitled: engine[0].toUpperCase() + engine.slice(1)
     };
