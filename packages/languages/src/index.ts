@@ -1,2 +1,2 @@
-export { languages, Language } from "./languages";
-export { Locale } from "./locales";
+export * from "./languages";
+export * from "./locales";
