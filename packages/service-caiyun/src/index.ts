@@ -95,7 +95,6 @@ export class Caiyun extends Translator<CaiyunConfig> {
         headers: {
           Accept: "application/json, text/plain, */*",
           "Content-Type": "application/json;charset=UTF-8",
-          DNT: "1",
           Origin: "https://fanyi.caiyunapp.com",
           Referer: "https://fanyi.caiyunapp.com/",
           "X-Authorization": config.token || (await this.getToken())
