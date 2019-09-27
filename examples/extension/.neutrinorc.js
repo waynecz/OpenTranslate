@@ -43,6 +43,9 @@ module.exports = {
       /* eslint-disable indent */
       // prettier-ignore
       neutrino.config
+        .performance
+          .hints(false)
+          .end()
         .optimization
           .clear()
           .end()
