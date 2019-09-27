@@ -104,16 +104,45 @@ export class Sogou extends Translator<SogouConfig> {
   };
 
   async updateToken(): Promise<void> {
+    let seccode: undefined | string;
+
     try {
-      const response = await this.request<{ seccode: string }>(
-        "https://raw.githubusercontent.com/OpenTranslate/OpenTranslate/master/packages/service-sogou/src/seccode.json"
+      const { data } = await this.request<string>(
+        "https://fanyi.sogou.com/logtrace",
+        {
+          headers: {
+            Referer: "https://fanyi.sogou.com",
+            Origin: "https://fanyi.sogou.com"
+          },
+          withCredentials: false,
+          transformResponse: [(data: string): string => data],
+          responseType: "text"
+        }
       );
-      if (response.data && response.data.seccode) {
-        this.token.value = response.data.seccode;
-        this.token.date = Date.now();
+
+      if (data) {
+        const matchSeccode = /window\.seccode=(\d+)/.exec(data);
+        if (matchSeccode) {
+          seccode = matchSeccode[1];
+        }
       }
-    } catch (e) {
-      console.warn(e);
+    } catch (e) {}
+
+    if (!seccode) {
+      try {
+        const { data } = await this.request<{ seccode: string }>(
+          "https://raw.githubusercontent.com/OpenTranslate/OpenTranslate/master/packages/service-sogou/src/seccode.json"
+        );
+
+        if (data && data.seccode) {
+          seccode = data.seccode;
+        }
+      } catch (e) {}
+    }
+
+    if (seccode) {
+      this.token.value = seccode;
+      this.token.date = Date.now();
     }
   }
 

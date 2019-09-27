@@ -2,8 +2,9 @@ import { Sogou } from "../src";
 import MockAdapter from "axios-mock-adapter";
 
 describe("Dict Sogou", () => {
+  const sogou = new Sogou();
+
   it("should translate successfully", async () => {
-    const sogou = new Sogou();
     const result = await sogou.translate("I love you", "en", "zh-CN");
 
     expect(result).toEqual({
@@ -25,7 +26,6 @@ describe("Dict Sogou", () => {
   }, 5000);
 
   it("should get supported languages", () => {
-    const sogou = new Sogou();
     const result = sogou.getSupportLanguages();
 
     expect(result).toContain("auto");
@@ -34,7 +34,6 @@ describe("Dict Sogou", () => {
   }, 5000);
 
   it("should detect language for a given text", async () => {
-    const sogou = new Sogou();
     const lang = await sogou.detect("你好");
 
     expect(lang).toBe("zh-CN");
