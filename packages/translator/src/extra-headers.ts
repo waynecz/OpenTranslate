@@ -13,16 +13,17 @@ const extGlobal =
 
 const modifierSingleton: { [pattern: string]: boolean } = {};
 
+const extraHeaderMatcher = /^(Origin|Referer)$/i;
+
 /**
  * Intercept and modify headers on browser extension
  * @param url
  */
-function setupHeaderModifier(url: string): void {
-  const { origin, pathname } = new URL(url);
+function setupHeaderModifier(url: string, origin: string): void {
   // ignore search params
-  const pattern = origin + pathname + "*";
+  const pattern = new URL(url).origin + "/*";
 
-  if (!extGlobal || modifierSingleton[pattern]) {
+  if (modifierSingleton[pattern]) {
     return;
   }
 
@@ -45,17 +46,18 @@ function setupHeaderModifier(url: string): void {
     (details: any) => {
       if (details && details.requestHeaders) {
         const headers = details.requestHeaders.filter(
-          (header: any) => !/^(Origin|Referer)$/.test(header.name)
+          (header: any) => !extraHeaderMatcher.test(header.name)
         );
 
         headers.push(
           { name: "Origin", value: origin },
           { name: "Referer", value: origin }
         );
+
         return { requestHeaders: headers };
       }
 
-      return { requestHeaders: details.requestHeaders };
+      return details;
     },
     { urls: [pattern] },
     extraInfoSpec
@@ -73,16 +75,28 @@ export const modifyExtraHeaders = (
     return config;
   }
 
-  const headers = Object.keys(config.headers);
-  const normalHeaders = headers.filter(
-    header => !/^(Origin|Referer)$/i.test(header)
-  );
+  const headerNames = Object.keys(config.headers);
+  const normalHeaders: AxiosRequestConfig["headers"] = {};
+  let origin: undefined | string;
 
-  if (normalHeaders.length === headers.length) {
+  for (let i = 0; i < headerNames.length; i++) {
+    const name = headerNames[i];
+    if (extraHeaderMatcher.test(name)) {
+      origin = config.headers[name];
+    } else {
+      normalHeaders[name] = config.headers[name];
+    }
+  }
+
+  if (!origin) {
     return config;
   }
 
-  setupHeaderModifier(url);
+  if (extGlobal) {
+    setupHeaderModifier(url, origin);
+  } else {
+    console.warn("Missing Browser Global");
+  }
 
   return {
     ...config,
