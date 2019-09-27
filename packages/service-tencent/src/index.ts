@@ -136,7 +136,6 @@ export class Tencent extends Translator<TencentConfig> {
         method: "post",
         withCredentials: false,
         headers: {
-          Host: "fanyi.qq.com",
           Origin: "https://fanyi.qq.com",
           Accept: "application/json, text/javascript, */*; q=0.01",
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
