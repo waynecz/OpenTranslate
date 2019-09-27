@@ -132,3 +132,5 @@ export class Caiyun extends Translator<CaiyunConfig> {
     };
   }
 }
+
+export default Caiyun;
