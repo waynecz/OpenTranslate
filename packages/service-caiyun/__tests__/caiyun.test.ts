@@ -4,7 +4,7 @@ describe("Dict Caiyun", () => {
   it("should translate successfully", async () => {
     const caiyun = new Caiyun();
     const result = await caiyun
-      .translate("I love you", "en", "zh-CN")
+      .translate("I love you", "auto", "zh-CN")
       .catch(e => console.log(e));
     expect(result).toEqual({
       engine: "caiyun",
