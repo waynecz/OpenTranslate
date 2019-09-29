@@ -89,6 +89,9 @@ export class Caiyun extends Translator<CaiyunConfig> {
     to: Language,
     config: CaiyunConfig
   ): Promise<TranslateQueryResult> {
+    if (from == "auto") {
+      from = await this.detect(text);
+    }
     const response = await this.request<CaiyunTranslateResult>(
       "https://api.interpreter.caiyunai.com/v1/translator",
       {
@@ -119,10 +122,7 @@ export class Caiyun extends Translator<CaiyunConfig> {
       to,
       origin: {
         paragraphs: [text],
-        tts: await this.textToSpeech(
-          text,
-          from !== "auto" ? from : await this.detect(text)
-        )
+        tts: await this.textToSpeech(text, from)
       },
       trans: {
         paragraphs: [result.target],
