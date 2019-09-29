@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Translator, TranslateQueryResult, Language, Languages } from "../src";
+import {
+  TranslateError,
+  Translator,
+  TranslateQueryResult,
+  Language,
+  Languages
+} from "../src";
 
 describe("Translator", () => {
   it("should successfully return result", async () => {
@@ -66,7 +72,7 @@ describe("Translator", () => {
       }
 
       query(): Promise<TranslateQueryResult> {
-        return Promise.reject(new Error("UNKNOWN"));
+        throw new TranslateError("UNKNOWN");
       }
     }
 

@@ -1,7 +1,8 @@
 import {
   Language,
   Translator,
-  TranslateQueryResult
+  TranslateQueryResult,
+  TranslateError
 } from "@opentranslate/translator";
 import qs from "qs";
 
@@ -145,7 +146,7 @@ export class Tencent extends Translator<TencentConfig> {
       }
     );
     if (!response || !response.data) {
-      throw new Error("NETWORK_ERROR");
+      throw new TranslateError("NETWORK_ERROR");
     }
     const result = response.data;
     const trans = result.translate.records.map(r => r.targetText);
