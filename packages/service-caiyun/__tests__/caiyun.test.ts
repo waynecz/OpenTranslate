@@ -1,8 +1,9 @@
 import { Caiyun } from "../src";
 
 describe("Dict Caiyun", () => {
+  const caiyun = new Caiyun();
+
   it("should translate successfully", async () => {
-    const caiyun = new Caiyun();
     const result = await caiyun
       .translate("I love you", "auto", "zh-CN")
       .catch(e => console.log(e));
