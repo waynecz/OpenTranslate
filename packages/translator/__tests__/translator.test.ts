@@ -6,8 +6,7 @@ import {
   Language,
   Languages
 } from "../src";
-console.log(TranslateError);
-console.log(Translator);
+
 describe("Translator", () => {
   it("should successfully return result", async () => {
     class TestTranslator extends Translator {

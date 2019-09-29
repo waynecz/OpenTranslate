@@ -1,6 +1,4 @@
 import { Caiyun } from "../src";
-import { TranslateError } from "@opentranslate/translator";
-console.log(TranslateError);
 
 describe("Dict Caiyun", () => {
   it("should translate successfully", async () => {
