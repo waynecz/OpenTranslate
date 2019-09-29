@@ -2,8 +2,9 @@ import { Tencent } from "../src";
 import axios from "axios";
 
 describe("Dict Tencent", () => {
+  const tencent = new Tencent();
+
   it("should translate successfully", async () => {
-    const tencent = new Tencent();
     const result = await tencent.translate(
       "I love you. Who are you",
       "auto",
@@ -38,7 +39,6 @@ describe("Dict Tencent", () => {
   }, 10000);
 
   it("should get supported languages", () => {
-    const tencent = new Tencent();
     const result = tencent.getSupportLanguages();
 
     expect(result).toContain("auto");

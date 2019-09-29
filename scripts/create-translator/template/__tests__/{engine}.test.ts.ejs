@@ -1,8 +1,9 @@
 import { <%- engineTitled %> } from "../src";
 
 describe("Dict <%- engineTitled %>", () => {
+  const <%- engine %> = new <%- engineTitled %>();
+
   it("should translate successfully", async () => {
-    const <%- engine %> = new <%- engineTitled %>();
     const result = await <%- engine %>.translate("I love you", "en", "zh-CN");
 
     expect(result).toEqual({
@@ -24,7 +25,6 @@ describe("Dict <%- engineTitled %>", () => {
   }, 5000);
 
   it("should get supported languages", () => {
-    const <%- engine %> = new <%- engineTitled %>();
     const result = <%- engine %>.getSupportLanguages();
 
     expect(result).toContain("auto");
@@ -33,7 +33,6 @@ describe("Dict <%- engineTitled %>", () => {
   }, 5000);
 
   // it("should detect language for a given text", async () => {
-  //   const <%- engine %> = new <%- engineTitled %>();
   //   const lang = await <%- engine %>.detect("你好");
   //
   //   expect(lang).toBe("zh-CN");
