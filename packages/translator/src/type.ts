@@ -11,11 +11,17 @@ export interface TranslatorInit<Config extends {}> {
   config?: Config;
 }
 
-export type TranslateError =
+export type TranslateErrorType =
   | "NETWORK_ERROR"
   | "NETWORK_TIMEOUT"
   | "API_SERVER_ERROR"
   | "UNKNOWN";
+
+export class TranslateError extends Error {
+  constructor(message: TranslateErrorType) {
+    super(message);
+  }
+}
 
 /** 统一的查询结果的数据结构 */
 export interface TranslateResult {

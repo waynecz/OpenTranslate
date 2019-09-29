@@ -2,7 +2,8 @@
 import {
   Language,
   Translator,
-  TranslateQueryResult
+  TranslateQueryResult,
+  TranslateError
 } from "@opentranslate/translator";
 import qs from "qs";
 
@@ -113,7 +114,7 @@ export class Caiyun extends Translator<CaiyunConfig> {
       }
     ).catch(() => {});
     if (!response || !response.data) {
-      throw new Error("NETWORK_ERROR");
+      throw new TranslateError("NETWORK_ERROR");
     }
     const result = response.data;
     return {

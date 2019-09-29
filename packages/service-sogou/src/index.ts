@@ -1,7 +1,8 @@
 import {
   Language,
   Translator,
-  TranslateQueryResult
+  TranslateQueryResult,
+  TranslateError
 } from "@opentranslate/translator";
 import qs from "qs";
 import md5 from "md5";
@@ -212,13 +213,13 @@ export class Sogou extends Translator<SogouConfig> {
     ).catch(() => {});
 
     if (!response || !response.data || !response.data.data) {
-      throw new Error("NETWORK_ERROR");
+      throw new TranslateError("NETWORK_ERROR");
     }
 
     const { translate } = response.data.data;
 
     if (!translate || translate.errorCode !== "0") {
-      throw new Error("API_SERVER_ERROR");
+      throw new TranslateError("API_SERVER_ERROR");
     }
 
     return {
