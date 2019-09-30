@@ -92,7 +92,7 @@ const langMap = new Map<string, Language>([
 const options = { minLength: 1, whitelist: [...langMap.keys()] };
 
 /**
- * Naive fallback langugage detection
+ * Naive fallback language detection
  */
 export function detectLang(text: string): Language {
   return langMap.get(franc(text, options)) || "auto";
