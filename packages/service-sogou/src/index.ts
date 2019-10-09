@@ -185,7 +185,10 @@ export class Sogou extends Translator<SogouConfig> {
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
           "X-Requested-With": "XMLHttpRequest",
           Referer: "https://fanyi.sogou.com",
-          Origin: "https://fanyi.sogou.com"
+          Host: "fanyi.sogou.com",
+          Origin: "https://fanyi.sogou.com",
+          "User-Agent":
+            " Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
         },
         data: qs.stringify({
           from: Sogou.langMap.get(from),
